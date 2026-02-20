@@ -1,0 +1,26 @@
+schema: '2.0'
+stages:
+  train:
+    cmd: python -m src.train --data Data/houseprices.csv
+    deps:
+    - path: Data/houseprices.csv
+      hash: md5
+      md5: 1777e411522c0083049614a3fb88dc27
+      size: 12561
+    - path: src/evaluate.py
+      hash: md5
+      md5: d2848ad6adb82703299b9fc6297b631d
+      size: 299
+    - path: src/preprocess.py
+      hash: md5
+      md5: c761ff9cd676bf824cf54beb80ae3ead
+      size: 1309
+    - path: src/train.py
+      hash: md5
+      md5: 6290f2349cb83eca2f25ea264290cade
+      size: 2708
+    outs:
+    - path: model.pkl
+      hash: md5
+      md5: a8f9158f6e3088b36a10c40738ddab51
+      size: 4793

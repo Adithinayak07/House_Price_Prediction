@@ -1,36 +1,45 @@
+# src/preprocess.py
+
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import OneHotEncoder, StandardScaler, FunctionTransformer
+from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-import numpy as np
 
 
-def build_preprocessor():
+def build_preprocessor(df):
 
-    categorical_features = ["locality", "facing", "parking"]
-    numerical_features = ["area", "BHK", "bathrooms"]
+    ordinal_features = ['BHK', 'bathrooms']
+    categorical_features = ['locality', 'facing', 'parking']
 
-    # Log transform only for area
-    area_log_pipeline = Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
-        ("log_transform", FunctionTransformer(np.log1p, validate=False)),
-        ("scaler", StandardScaler())
-    ])
+    # EXACT notebook logic
+    continuous_features = (
+        df.drop(columns=ordinal_features)
+          .drop(columns=categorical_features)
+          .columns.tolist()
+    )
 
-    other_numeric_pipeline = Pipeline([
-        ("imputer", SimpleImputer(strategy="median")),
-        ("scaler", StandardScaler())
-    ])
+    if 'price_per_sqft' in continuous_features:
+        continuous_features.remove('price_per_sqft')
 
-    categorical_pipeline = Pipeline([
-        ("imputer", SimpleImputer(strategy="constant", fill_value="Missing")),
-        ("encoder", OneHotEncoder(handle_unknown="ignore"))
-    ])
+    # Pipelines
+    ordinal_transformer = Pipeline(
+        steps=[("ordinalenc", OrdinalEncoder())]
+    )
 
-    preprocessor = ColumnTransformer([
-        ("area", area_log_pipeline, ["area"]),
-        ("num", other_numeric_pipeline, ["BHK", "bathrooms"]),
-        ("cat", categorical_pipeline, categorical_features)
-    ])
+    categorical_transformer = Pipeline(
+        steps=[("onehotenc", OneHotEncoder(handle_unknown="ignore"))]
+    )
+
+    continuous_transformer = Pipeline(
+        steps=[("scaler", StandardScaler())]
+    )
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("continuous", continuous_transformer, continuous_features),
+            ("categorical", categorical_transformer, categorical_features),
+            ("ordinal", ordinal_transformer, ordinal_features),
+        ],
+        remainder="passthrough"
+    )
 
     return preprocessor

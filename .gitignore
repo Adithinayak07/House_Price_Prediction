@@ -16,3 +16,4 @@ mlruns/
 
 # OS
 .DS_Store
+/model.pkl
