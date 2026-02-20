@@ -22,11 +22,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          pip install dvc
 
-      - name: Pull DVC data
+      - name: Install DVC
         run: |
-          dvc pull
+          pip install dvc
 
       - name: Reproduce pipeline
         run: |
