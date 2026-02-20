@@ -2,7 +2,6 @@ stages:
   train:
     cmd: python -m src.train --data Data/houseprices.csv
     deps:
-    - Data/houseprices.csv
     - src/train.py
     - src/preprocess.py
     - src/evaluate.py
