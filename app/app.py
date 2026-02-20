@@ -4,7 +4,7 @@ import pandas as pd
 
 st.title("🏠 House Price Predictor")
 
-model = joblib.load("../model.pkl")
+model = joblib.load("model.pkl")
 
 with st.form("predict"):
     area = st.number_input("Square Feet (area)", value=1000)
@@ -18,12 +18,13 @@ with st.form("predict"):
 
 if submitted:
     X = pd.DataFrame([{
-        "area": area,
-        "facing": facing if facing else "Missing",
-        "locality": locality if locality else "Missing",
-        "BHK": BHK,
-        "bathrooms": bathrooms,
-        "parking": parking if parking else "Missing"
+    "area": area,
+    "rent": rent,
+    "facing": facing if facing else "Missing",
+    "locality": locality if locality else "Missing",
+    "BHK": BHK,
+    "bathrooms": bathrooms,
+    "parking": parking if parking else "Missing"
     }])
     
     pred = model.predict(X)[0]

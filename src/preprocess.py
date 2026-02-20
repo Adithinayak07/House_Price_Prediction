@@ -7,8 +7,10 @@ from sklearn.pipeline import Pipeline
 
 def build_preprocessor(df):
 
-    ordinal_features = ['BHK', 'bathrooms']
-    categorical_features = ['locality', 'facing', 'parking']
+    
+    continuous_features = ["area", "rent"]
+    categorical_features = ["locality", "facing", "parking"]
+    ordinal_features = ["BHK", "bathrooms"]
 
     # EXACT notebook logic
     continuous_features = (

@@ -21,9 +21,19 @@ mlflow.set_tracking_uri("file:./mlruns")
 def train(data_path, model_path="model.pkl"):
 
     df = pd.read_csv(data_path)
+    feature_columns = [
+    "area",
+    "rent",
+    "locality",
+    "BHK",
+    "facing",
+    "parking",
+    "bathrooms"
+    ]
 
+    X = df[feature_columns]
     y = df["price_per_sqft"]
-    X = df.drop("price_per_sqft", axis=1)
+
 
     test_size = 0.1
     random_state = 1
