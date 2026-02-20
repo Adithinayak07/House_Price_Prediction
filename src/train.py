@@ -1,5 +1,4 @@
 # src/train.py
-
 import pandas as pd
 import argparse
 import joblib
@@ -14,7 +13,11 @@ from sklearn.pipeline import Pipeline
 from src.preprocess import build_preprocessor
 from src.evaluate import evaluate_model
 
+import os
+import mlflow
 
+# Force MLflow to use local relative tracking directory
+mlflow.set_tracking_uri("file:./mlruns")
 def train(data_path, model_path="model.pkl"):
 
     df = pd.read_csv(data_path)
